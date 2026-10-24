@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AgentM 视觉体系 — 颜色 token
+  ============================================================
+  命名规则：
+    am_<category>_<semantic>[_tint]
+    category: base(基础) / surface(表面) / accent(强调)
+  深色主题下同名 token 在 values-night/colors.xml 中覆盖。
+
+  用法约定：
+  - Compose 侧统一通过 AgentMTheme 内 colorScheme 引用，不直接读这些资源。
+  - View 侧（系统弹窗、状态栏）允许读资源。
+-->
+<resources>
+    <!-- ================= 基础色板（Light） ================= -->
+    <!-- 品牌主色：AgentM 靛蓝。动态取色关闭时的回退 primary -->
+    <color name="am_base_primary">#FF4553E8</color>
+    <color name="am_base_on_primary">#FFFFFFFF</color>
+    <color name="am_base_primary_container">#FFE2E4FF</color>
+    <color name="am_base_on_primary_container">#FF191A56</color>
+    <color name="am_base_secondary">#FF5E5E80</color>
+    <color name="am_base_secondary_container">#FFEDEAFF</color>
+    <color name="am_base_accent">#FF12B5A0</color>
+    <color name="am_base_accent_container">#FFA9F2E8</color>
+    <color name="am_base_error">#FFBA1A1A</color>
+
+    <!-- ================= 表面分层（Light） =================
+         M3 elevation 语义：surface 随 elevation 变亮，这里直接预混。 -->
+    <color name="am_surface_light">#FFFCF9FF</color>
+    <color name="am_surface_container_lowest">#FFFFFFFF</color>
+    <color name="am_surface_container_low">#FFF6F3FA</color>
+    <color name="am_surface_container">#FFF2EEF7</color>
+    <color name="am_surface_container_high">#FFECE9F0</color>
+    <color name="am_surface_container_highest">#FFE7E3EB</color>
+    <color name="am_surface_inverse">#FFE7E0EB</color>
+
+    <!-- 消息气泡专用 -->
+    <color name="am_bubble_user">#FF4553E8</color>
+    <color name="am_bubble_user_on">#FFFFFFFF</color>
+    <color name="am_bubble_assistant">#FFF2EEF7</color>
+    <color name="am_bubble_assistant_on">#FF1D1B20</color>
+    <color name="am_bubble_tool">#FF12B5A0</color>
+    <color name="am_bubble_tool_on">#FF063A33</color>
+
+    <!-- 画布（orchestrator）专用 -->
+    <color name="am_canvas_bg">#FF141218</color>
+    <color name="am_canvas_grid">#22FFFFFF</color>
+    <color name="am_node_agent">#FF7C6FF0</color>
+    <color name="am_node_tool">#FF12B5A0</color>
+    <color name="am_node_io">#FF5E5E80</color>
+    <color name="am_edge_idle">#FF55556A</color>
+    <color name="am_edge_active">#FF12B5A0</color>
+</resources>

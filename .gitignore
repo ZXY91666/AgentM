@@ -1,0 +1,30 @@
+# 参考调研目录（不属于 AgentM）
+x-*/
+x-mobileagent/
+
+# Gradle
+.gradle/
+build/
+*/build/
+local.properties
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# APK / 构建产物
+*.apk
+*.aab
+*.keystore
+
+# Kotlin
+*.class
+
+# Log
+*.log
+osrc-*

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AgentM 视觉体系 — 尺寸 token
+  ============================================================
+  三层体系（与 compose 侧 agentm_tokens.kt 同步，修改需两侧同改）：
+    am_r_*   圆角：card=16 / bubble=12 / input=18 / chip=8
+    am_m_*   间距：xs=4 sm=8 md=12 lg=16 xl=24
+    am_el_*  阴影/高度层：surface 层 e0/e1/e2，dp 高度 + 透明度
+-->
+<resources>
+    <!-- ================= 圆角 ================= -->
+    <dimen name="am_r_chip">8dp</dimen>
+    <dimen name="am_r_bubble">12dp</dimen>
+    <dimen name="am_r_card">16dp</dimen>
+    <dimen name="am_r_input">18dp</dimen>
+    <dimen name="am_r_sheet">24dp</dimen>
+
+    <!-- ================= 间距 ================= -->
+    <dimen name="am_m_xs">4dp</dimen>
+    <dimen name="am_m_sm">8dp</dimen>
+    <dimen name="am_m_md">12dp</dimen>
+    <dimen name="am_m_lg">16dp</dimen>
+    <dimen name="am_m_xl">24dp</dimen>
+    <!-- 气泡内边距：上下小、左右大，聊天节奏更紧凑 -->
+    <dimen name="am_m_bubble_h">14dp</dimen>
+    <dimen name="am_m_bubble_v">9dp</dimen>
+    <!-- 消息列表条目间距 -->
+    <dimen name="am_m_message">14dp</dimen>
+
+    <!-- ================= 阴影/高度层 =================
+         预混透明度：M3 阴影 = 两叠色（ambient + key）。
+         这里给出单层近似值，compose 侧用 ShadowElevation 时引用。 -->
+    <dimen name="am_el_0">0dp</dimen>
+    <dimen name="am_el_1">2dp</dimen>
+    <dimen name="am_el_2">6dp</dimen>
+    <!-- 画布节点：默认无阴影（深色画布），选中时 e2 -->
+    <dimen name="am_el_node">0dp</dimen>
+
+    <!-- ================= 组件尺寸 ================= -->
+    <dimen name="am_size_avatar">36dp</dimen>
+    <dimen name="am_size_avatar_mini">24dp</dimen>
+    <dimen name="am_size_toolbar">56dp</dimen>
+    <dimen name="am_size_input_bar">48dp</dimen>
+    <dimen name="am_size_chip_h">32dp</dimen>
+    <!-- 画布节点默认宽高 -->
+    <dimen name="am_node_w">172dp</dimen>
+    <dimen name="am_node_h">56dp</dimen>
+</resources>

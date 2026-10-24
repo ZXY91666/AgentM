@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AgentM GUI Agent 无障碍服务配置。
+    由 AndroidManifest.xml 的 <service><meta-data android:name="android.accessibilityservice"/> 引用。
+    参考 Mobile-Agent / AppAgent 的服务端动作空间需求：
+    - canPerformGestures：允许通过 dispatchGesture 执行点击/滑动
+    - canRetrieveWindowContent：允许读取无障碍树（UiElement 列表）
+    - canRequestAccessibilityButton：允许请求系统无障碍快捷按钮（可选）
+    - isRequestTouchExplorationMode / isObtainWindowLeaks 等保持默认
+-->
+<accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/gui_agent_service_description"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeWindowsChanged|typeWindowPaneClosed|typeWindowPaneOpened"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagRequestFilterKeyEvents|flagReportViewIds|flagCanRetrieveWindowContent"
+    android:canPerformGestures="true"
+    android:canRetrieveWindowContent="true"
+    android:canRequestAccessibilityButton="true"
+    android:notificationTimeout="100" />

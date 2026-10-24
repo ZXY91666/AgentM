@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gui_agent_service_label">AgentM GUI Agent</string>
+    <string name="gui_agent_service_description">AgentM 手机操作智能体：通过无障碍服务执行截图、点击、滑动、输入等动作，用于跨应用自动化任务。</string>
+</resources>

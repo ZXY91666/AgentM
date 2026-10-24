@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自定义 attr：圆角/间距/阴影，供 View 侧组件在 style 中引用 -->
+<resources>
+    <declare-styleable name="AmCardAttrs">
+        <attr name="am_card_corner" format="dimension" />
+        <attr name="am_card_elevation" format="dimension" />
+    </declare-styleable>
+</resources>

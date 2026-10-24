@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 深色主题颜色覆盖。同名 token，深浅两套。 -->
+<resources>
+    <!-- 基础色板（Dark）：primary 提亮，避免深色底下发闷 -->
+    <color name="am_base_primary">#FFB3B4FF</color>
+    <color name="am_base_on_primary">#FF24245F</color>
+    <color name="am_base_primary_container">#FF353579</color>
+    <color name="am_base_on_primary_container">#FFE2E4FF</color>
+    <color name="am_base_secondary">#FFC6C5E7</color>
+    <color name="am_base_secondary_container">#FF3E3E5F</color>
+    <color name="am_base_accent">#FF4FD9C6</color>
+    <color name="am_base_accent_container">#FF065F52</color>
+    <color name="am_base_error">#FFE7756C</color>
+
+    <!-- 表面分层（Dark）：elevation 越高越亮 -->
+    <color name="am_surface_light">#FF1D1B20</color>
+    <color name="am_surface_container_lowest">#FF131015</color>
+    <color name="am_surface_container_low">#FF211F26</color>
+    <color name="am_surface_container">#FF252329</color>
+    <color name="am_surface_container_high">#FF302E35</color>
+    <color name="am_surface_container_highest">#FF3A383F</color>
+    <color name="am_surface_inverse">#FF323036</color>
+
+    <!-- 消息气泡（Dark） -->
+    <color name="am_bubble_user">#FF6E72F5</color>
+    <color name="am_bubble_user_on">#FFFFFFFF</color>
+    <color name="am_bubble_assistant">#FF302E35</color>
+    <color name="am_bubble_assistant_on">#FFEDEAF2</color>
+    <color name="am_bubble_tool">#FF4FD9C6</color>
+    <color name="am_bubble_tool_on">#FF00231E</color>
+
+    <!-- 画布（Dark 下画布本来就是深色，微调对比） -->
+    <color name="am_canvas_bg">#FF0E0C12</color>
+    <color name="am_canvas_grid">#1AEDEAF2</color>
+    <!-- 节点/连线：深浅主题一致，不覆盖 -->
+</resources>

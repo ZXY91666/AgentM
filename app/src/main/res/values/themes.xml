@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AgentM 主题 — Material3
+  ============================================================
+  双轨制：
+  1. View 侧（系统弹窗、TextInputEditText、状态栏）用本文件里的
+     Theme.AgentM，基于 Material3 静态色板。
+  2. Compose 侧用 AgentMTheme（core/ui/theme.kt），运行时动态取色
+     （Android 12+ DynamicColors），静态回退同一套 token。
+
+  动态取色开关：Android 12+ 默认开启（app 设置页可关，
+  关闭后 Compose 侧回退静态色板；View 侧不受影响）。
+-->
+<resources>
+    <style name="Theme.AgentM" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- 品牌色（系统 color* 属性，深浅随 values-night 自动切换） -->
+        <item name="android:colorPrimary">@color/am_base_primary</item>
+        <item name="android:colorAccent">@color/am_base_accent</item>
+        <!-- 表面 -->
+        <item name="android:colorBackground">@color/am_surface_light</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/am_surface_light</item>
+        <item name="android:navigationBarColor">@color/am_surface_light</item>
+        <!-- 圆角/间距：供 View 侧组件直接引用 -->
+        <item name="am_card_corner">@dimen/am_r_card</item>
+        <item name="am_card_elevation">@dimen/am_el_1</item>
+    </style>
+
+    <style name="Theme.AgentM.Canvas" parent="Theme.AgentM">
+        <!-- 画布页：全屏沉浸、深色背景（与 am_canvas_bg 呼应） -->
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- 系统弹窗（AlertDialog / Snackbar 宿主） -->
+    <style name="ThemeOverlay.AgentM.Dialog" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorPrimary">@color/am_base_primary</item>
+        <item name="android:colorAccent">@color/am_base_accent</item>
+    </style>
+</resources>
