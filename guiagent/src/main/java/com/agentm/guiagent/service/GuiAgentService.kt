@@ -121,13 +121,16 @@ class GuiAgentService : AccessibilityService() {
             runCatching {
                 takeScreenshot(
                     Display.DEFAULT_DISPLAY,
-                    AccessibilityService.RequestScreenshotFlags.DEFAULT,
-                    Bundle()
+                    mainExecutor
                 ) { res ->
-                    if (res != null) {
-                        val b = res.bitmap
-                        box.set(b)
-                        lastScreenshot.set(b)
+                    if (res.errorCode == ScreenshotResult.ERROR_SUCCESS) {
+                        val b = res.hardwareBuffer?.let { hb ->
+                            Bitmap.wrapHardwareBuffer(hb, null)?.copy(Bitmap.Config.ARGB_8888, false)
+                        }
+                        if (b != null) {
+                            box.set(b)
+                            lastScreenshot.set(b)
+                        }
                     }
                     latch.countDown()
                 }
@@ -148,13 +151,12 @@ class GuiAgentService : AccessibilityService() {
      */
     @SuppressLint("MissingPermission")
     fun tap(x: Int, y: Int): Boolean {
-        val root = currentRoot() ?: return false
         val path = Path().apply {
             moveTo(x.toFloat(), y.toFloat())
             lineTo(x.toFloat(), y.toFloat())
         }
-        val gesture = root.createGesture().Builder()
-            .addStroke(path, 0L, 50L)
+        val gesture = GestureDescription.Builder()
+            .addStroke(GestureDescription.StrokeDescription(path, 0L, 50L))
             .build()
         return dispatchGesture(gesture, null, null)
     }
@@ -162,13 +164,12 @@ class GuiAgentService : AccessibilityService() {
     /** 滑动 (x1,y1) -> (x2,y2)，durationMs 控制时长。 */
     @SuppressLint("MissingPermission")
     fun swipe(x1: Int, y1: Int, x2: Int, y2: Int, durationMs: Int = 300): Boolean {
-        val root = currentRoot() ?: return false
         val path = Path().apply {
             moveTo(x1.toFloat(), y1.toFloat())
             lineTo(x2.toFloat(), y2.toFloat())
         }
-        val gesture = root.createGesture().Builder()
-            .addStroke(path, 0L, durationMs.toLong())
+        val gesture = GestureDescription.Builder()
+            .addStroke(GestureDescription.StrokeDescription(path, 0L, durationMs.toLong()))
             .build()
         return dispatchGesture(gesture, null, null)
     }
@@ -182,7 +183,8 @@ class GuiAgentService : AccessibilityService() {
     fun type(text: String): Boolean {
         val root = currentRoot() ?: return false
         val editableNode = findEditableNode(root) ?: return false
-        return editableNode.performGlobalAction(AccessibilityNodeInfo.ACTION_SET_TEXT, text)
+        val args = Bundle().apply { putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, text) }
+        return editableNode.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)
     }
 
     private fun findEditableNode(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {

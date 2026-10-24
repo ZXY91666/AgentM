@@ -181,16 +181,10 @@ class GuiAgentController {
     /** 截取并返回可被 base64 编码的 PNG（给 LlmGateway 视觉理解用）。 */
     fun screenShotAsBase64Png(): String? {
         val bmp = screenShot() ?: return null
-        return android.util.Base64.encodeToString(
-            android.graphics.Bitmap.copy(
-                bmp, android.graphics.Bitmap.Config.ARGB_8888
-            ).run {
-                val bytes = java.io.ByteArrayOutputStream()
-                compress(android.graphics.Bitmap.CompressFormat.PNG, 90, bytes)
-                bytes.toByteArray()
-            },
-            android.util.Base64.NO_WRAP
-        )
+        val copied = bmp.copy(android.graphics.Bitmap.Config.ARGB_8888, false)
+        val bytes = java.io.ByteArrayOutputStream()
+        copied.compress(android.graphics.Bitmap.CompressFormat.PNG, 90, bytes)
+        return android.util.Base64.encodeToString(bytes.toByteArray(), android.util.Base64.NO_WRAP)
     }
 
     // endregion

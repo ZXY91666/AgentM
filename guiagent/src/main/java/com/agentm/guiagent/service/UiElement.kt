@@ -10,7 +10,7 @@ data class UiElement(
     val contentDescription: String?,
     val bounds: Rect,            // 屏幕绝对坐标（px）
     val className: String?,
-    val package: String?,
+    val `package`: String?,
     val resourceEntry: String?,
     val clickable: Boolean,
     val focusable: Boolean,
