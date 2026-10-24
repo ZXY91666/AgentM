@@ -9,10 +9,12 @@ import com.agentm.localllm.model.OllamaModelDetails
 import com.agentm.localllm.model.OllamaOptions
 import com.agentm.localllm.model.OllamaShowResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -52,11 +54,6 @@ class OllamaClient(
         .callTimeout(timeoutMs * 4, TimeUnit.MILLISECONDS)
         .build()
 
-    private companion object {
-        val JSON_MEDIA = "application/json".toMediaType()
-        val CODES_OK = setOf(200, 201, 204)
-    }
-
     // ---- 模型 ----
 
     /** GET /api/tags */
@@ -73,7 +70,7 @@ class OllamaClient(
             OllamaModel(
                 id = id,
                 displayName = id,
-                size = obj["size"]?.jsonPrimitive?.longOrNull() ?: 0L,
+                size = obj["size"]?.jsonPrimitive?.longOrNull ?: 0L,
                 quantization = details?.quantizationLevel
                     ?: obj["quantization_level"]?.jsonPrimitive?.contentOrNull.orEmpty(),
                 parameters = details?.parameterCount
@@ -142,9 +139,11 @@ class OllamaClient(
                 throw OllamaException(resp.code, "stream chat 失败: ${resp.body?.string().orEmpty().take(200)}")
             }
             val bodyStream = resp.body ?: throw IOException("空响应体")
-            bodyStream.charStream().bufferedReader().lineSequence().forEach { line ->
-                if (line.isBlank()) return@forEach
-                ensureActive()
+            val source = bodyStream.source()
+            while (true) {
+                val line = source.readUtf8Line() ?: break
+                if (line.isBlank()) continue
+                currentCoroutineContext().ensureActive()
                 emit(json.decodeFromString(OllamaChunk.serializer(), line))
             }
         }
@@ -183,7 +182,7 @@ class OllamaClient(
         return PullResult(
             model = obj["model"]?.jsonPrimitive?.contentOrNull.orEmpty(),
             status = obj["status"]?.jsonPrimitive?.contentOrNull.orEmpty(),
-            completed = obj["completed"]?.jsonPrimitive?.booleanOrNull() ?: false,
+            completed = obj["completed"]?.jsonPrimitive?.booleanOrNull ?: false,
         )
     }
 
@@ -208,6 +207,8 @@ class OllamaClient(
 
     companion object {
         const val DEFAULT_TIMEOUT_MS = 30_000L
+        val JSON_MEDIA = "application/json".toMediaType()
+        val CODES_OK = setOf(200, 201, 204)
     }
 }
 
