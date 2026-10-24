@@ -71,12 +71,12 @@ val AmShapes = Shapes(
 
 /** 类型 token：紧凑聊天节奏，正文 15sp 起。 */
 val AmTypography = Typography(
-    titleLarge = Typography().titleLarge.copy(fontSize = 20.sp()),
-    titleMedium = Typography().titleMedium.copy(fontSize = 17.sp()),
-    titleSmall = Typography().titleSmall.copy(fontSize = 15.sp()),
-    bodyLarge = Typography().bodyLarge.copy(fontSize = 15.sp()),
-    bodyMedium = Typography().bodyMedium.copy(fontSize = 14.sp()),
-    labelMedium = Typography().labelMedium.copy(fontSize = 13.sp()),
+    titleLarge = Typography().titleLarge.copy(fontSize = 20.sp),
+    titleMedium = Typography().titleMedium.copy(fontSize = 17.sp),
+    titleSmall = Typography().titleSmall.copy(fontSize = 15.sp),
+    bodyLarge = Typography().bodyLarge.copy(fontSize = 15.sp),
+    bodyMedium = Typography().bodyMedium.copy(fontSize = 14.sp),
+    labelMedium = Typography().labelMedium.copy(fontSize = 13.sp),
 )
 
 /** 间距 token（dp，对应 am_m_*）。 */
