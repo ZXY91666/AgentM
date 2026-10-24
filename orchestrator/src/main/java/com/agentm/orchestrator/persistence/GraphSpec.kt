@@ -70,7 +70,7 @@ data class GraphSpec(
             return GraphSpec(
                 id = m["id"]?.toString() ?: "graph",
                 entry = (m["entry"] as? String) ?: ((m["nodes"] as? List<*>)?.firstOrNull()?.toString() ?: ""),
-                nodes = ((m["nodes"] as? List<*>) ?: emptyList()).map { n ->
+                nodes = ((m["nodes"] as? List<*>) ?: emptyList<Any?>()).filterIsInstance<Any>().map { n ->
                     NodeSpec(id = n.toString(), agent = n.toString())
                 },
                 edges = ((m["edges"] as? List<Map<String, Any?>>) ?: emptyList()).map { e ->

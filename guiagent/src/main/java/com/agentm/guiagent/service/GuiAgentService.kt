@@ -1,6 +1,7 @@
 package com.agentm.guiagent.service
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.GestureDescription
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
@@ -18,8 +19,9 @@ import android.view.accessibility.AccessibilityNodeInfo
 import java.util.ArrayDeque
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.Executor
 import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.TimeUnit
 
 /**
  * 手机操作 agent 的无障碍服务。
@@ -121,19 +123,23 @@ class GuiAgentService : AccessibilityService() {
             runCatching {
                 takeScreenshot(
                     Display.DEFAULT_DISPLAY,
-                    mainExecutor
-                ) { res ->
-                    if (res.errorCode == ScreenshotResult.ERROR_SUCCESS) {
-                        val b = res.hardwareBuffer?.let { hb ->
-                            Bitmap.wrapHardwareBuffer(hb, null)?.copy(Bitmap.Config.ARGB_8888, false)
+                    mainExecutor,
+                    object : TakeScreenshotCallback {
+                        override fun onSuccess(result: ScreenshotResult) {
+                            val b = result.hardwareBuffer?.let { hb ->
+                                Bitmap.wrapHardwareBuffer(hb, null)?.copy(Bitmap.Config.ARGB_8888, false)
+                            }
+                            if (b != null) {
+                                box.set(b)
+                                lastScreenshot.set(b)
+                            }
+                            latch.countDown()
                         }
-                        if (b != null) {
-                            box.set(b)
-                            lastScreenshot.set(b)
+                        override fun onFailure(errorCode: Int) {
+                            latch.countDown()
                         }
                     }
-                    latch.countDown()
-                }
+                )
             }
             runCatching { latch.await(1_500, TimeUnit.MILLISECONDS) }
             val bmp = box.get()

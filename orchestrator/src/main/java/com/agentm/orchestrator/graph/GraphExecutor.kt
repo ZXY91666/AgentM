@@ -2,7 +2,7 @@ package com.agentm.orchestrator.graph
 
 import com.agentm.core.model.AgentEvent
 import com.agentm.core.model.ChatMessage
-import kotlinx.coroutines.Channel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

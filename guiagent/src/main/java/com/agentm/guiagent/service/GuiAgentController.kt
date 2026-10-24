@@ -1,7 +1,6 @@
 package com.agentm.guiagent.service
 
 import android.graphics.Bitmap
-import android.graphics.Rect
 import java.util.ArrayDeque
 
 /**
@@ -139,12 +138,13 @@ class GuiAgentController {
             val isInteractive = n.isClickable || n.isFocusable || n.isEditable ||
                 n.isScrollable || n.isCheckable || n.isLongClickable
             if (hasText || isInteractive) {
+                val customRect = Rect(androidBounds.left, androidBounds.top, androidBounds.right, androidBounds.bottom)
                 out.add(
                     UiElement(
                         index = index++,
                         text = n.text?.toString(),
                         contentDescription = n.contentDescription?.toString(),
-                        bounds = Rect(androidBounds.left, androidBounds.top, androidBounds.right, androidBounds.bottom),
+                        bounds = customRect,
                         className = n.className?.toString(),
                         `package` = n.packageName?.toString(),
                         resourceEntry = n.viewIdResourceName,
