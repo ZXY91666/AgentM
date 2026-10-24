@@ -11,10 +11,9 @@
 <accessibility-service
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/gui_agent_service_description"
-    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeWindowsChanged|typeWindowPaneClosed|typeWindowPaneOpened"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeWindowsChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagDefault|flagRequestFilterKeyEvents|flagReportViewIds|flagCanRetrieveWindowContent"
+    android:accessibilityFlags="flagDefault|flagRequestFilterKeyEvents|flagReportViewIds"
     android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"
-    android:canRequestAccessibilityButton="true"
     android:notificationTimeout="100" />

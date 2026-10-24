@@ -24,7 +24,7 @@ import kotlinx.coroutines.runBlocking
  */
 class Orchestrator(
     val scope: CoroutineScope,
-    private val defaultRegistry: ToolRegistry = ToolRegistry.InMemory(),
+    private val defaultRegistry: ToolRegistry = ToolRegistry.create(),
     private val executor: GraphExecutor = GraphExecutor(),
     private val router: MainRouter = MainRouter()
 ) {
@@ -92,7 +92,7 @@ class Orchestrator(
 
     /** 路由命中哪张图（纯查询，不执行）。 */
     fun routedGraph(input: String): AgentGraph? =
-        graphs[router.route(input, graphs.keys)]
+        graphs[router.route(input, graphs.keys.toList())]
 
     companion object {
         /** 把 [AgentDef] 快速包成"单节点图"并注册（最小组合，适合快速接入）。 */

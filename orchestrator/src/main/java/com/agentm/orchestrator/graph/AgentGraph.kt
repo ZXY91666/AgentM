@@ -46,6 +46,9 @@ interface ToolRegistry {
             override fun specs(): List<com.agentm.core.model.ToolSpec> = specs.toList()
             override fun names(): List<String> = execs.keys.toList()
         }
+
+        /** 创建内存实现（避免外部直接引用伴生嵌套类）。 */
+        fun create(): ToolRegistry = InMemory()
     }
 }
 

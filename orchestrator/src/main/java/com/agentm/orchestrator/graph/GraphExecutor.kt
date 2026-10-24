@@ -2,9 +2,11 @@ package com.agentm.orchestrator.graph
 
 import com.agentm.core.model.AgentEvent
 import com.agentm.core.model.ChatMessage
+import kotlinx.coroutines.Channel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 /**
  * 图执行器：驱动 [AgentGraph] 的一次完整运行（参考 LangGraph 的超步执行模型）。
@@ -45,13 +47,19 @@ class GraphExecutor(private val defaultMaxRounds: Int = 12) {
         tools: Map<String, suspend (String) -> String> = emptyMap(),
         maxRounds: Int? = null
     ): Flow<AgentEvent> = flow {
-        emit(AgentEvent.Started(runId = "graph:${graph.id}"))
-        val result = execute(graph, input, scope, tools, maxRounds, liveSink = { ev -> emit(ev) })
-        if (result.failed) {
-            emit(AgentEvent.Error(result.error ?: "graph ${graph.id} failed"))
-        } else {
-            emit(AgentEvent.Done(ChatMessage.assistant(result.output)))
+        val ch = Channel<AgentEvent>(Channel.UNLIMITED)
+        val job = scope.launch {
+            val result = execute(graph, input, scope, tools, maxRounds, liveSink = { ev -> ch.trySend(ev) })
+            if (result.failed) {
+                ch.send(AgentEvent.Error(result.error ?: "graph ${graph.id} failed"))
+            } else {
+                ch.send(AgentEvent.Done(ChatMessage.assistant(result.output)))
+            }
+            ch.close()
         }
+        emit(AgentEvent.Started(runId = "graph:${graph.id}"))
+        for (ev in ch) emit(ev)
+        job.cancel()
     }
 
     /**
