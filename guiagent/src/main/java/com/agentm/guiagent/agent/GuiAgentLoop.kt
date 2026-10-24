@@ -5,7 +5,6 @@ import com.agentm.guiagent.service.UiElement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -131,8 +130,8 @@ class GuiAgentLoop(
                     observation = if (executed) null else "执行失败（未启用 / 坐标越界 / 无焦点节点）")
             )
 
-            // 5. 执行后短延时，让 UI 状态稳定再下一轮
-            delay(SETTLE_MS)
+            // 5. 执行后短延时，让 UI 状态稳定再下一轮（run 为同步阻塞路径，用线程 sleep）
+            Thread.sleep(SETTLE_MS)
         }
 
         return TaskResult(task, steps, finalAction, success)

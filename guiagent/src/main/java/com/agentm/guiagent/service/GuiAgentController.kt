@@ -2,7 +2,7 @@ package com.agentm.guiagent.service
 
 import android.graphics.Bitmap
 import android.graphics.Rect
-import android.util.ArrayDeque
+import java.util.ArrayDeque
 
 /**
  * 对 [GuiAgentService] 的高层 API，orchestrator 把它当 tool 调用。
