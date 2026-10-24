@@ -26,6 +26,9 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += listOf(
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        )
     }
 
     buildTypes {
@@ -39,11 +42,14 @@ android {
 dependencies {
     api(project(":core"))
     api(project(":orchestrator"))
+    implementation(project(":guiagent"))
+    implementation(project(":localllm"))
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
+    implementation(libs.compose.material.icons)
     implementation(libs.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.core.ktx)

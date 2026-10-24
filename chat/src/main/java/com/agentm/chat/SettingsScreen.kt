@@ -35,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.agentm.app.AgentMApplication
 import com.agentm.core.model.LlmConfig
 import com.agentm.localllm.client.PullResult
 import com.agentm.localllm.model.OllamaModel
@@ -45,17 +44,15 @@ import kotlinx.coroutines.launch
 /**
  * 设置屏：LLM 双通道配置（本地 Ollama / 云端 OpenAI 兼容）+ Ollama 连接测试 + 模型列表 / 拉取。
  *
- * 数据流（全部走 [AgentMApplication.ollamaRepo] 的真实 API）：
+ * 数据流（全部走 [ChatGraphHolder.ollamaRepo] 的真实 API，app 启动时绑定）：
  * - 本地：host 输入 + [testConnection(host)] + [setHost] 保存 + [listAvailable] + [pull(id)]
  * - 云端：baseUrl / apiKey / model 表单 + 配置完整性校验（LlmConfig.isUsable）
- *   （真实连通性探测等 LlmGateway 落地后由 task-9 接入）
  *
  * 视觉：卡片分组（am_r_card=16dp 圆角），卡片间距 14dp（am_m_message）。
  */
 @Composable
 fun SettingsScreen() {
-    val app = AgentMApplication.app
-    val repo = app.ollamaRepo
+    val repo = ChatGraphHolder.ollamaRepo
     val scope = rememberCoroutineScope()
 
     // ---- 通道状态 ----
@@ -75,6 +72,16 @@ fun SettingsScreen() {
     var cloudApiKey by remember { mutableStateOf("") }
     var cloudModel by remember { mutableStateOf("gpt-4o-mini") }
     var cloudTestResult by remember { mutableStateOf<String?>(null) }
+
+    fun loadModels() {
+        ollamaLoading = true
+        scope.launch {
+            val list = runCatching { repo.listAvailable() }.getOrElse { emptyList() }
+            ollamaModels = list
+            if (list.isEmpty()) ollamaTestResult = "⚠ 远端没有模型，请拉取一个"
+            ollamaLoading = false
+        }
+    }
 
     fun testOllama() {
         ollamaTesting = true
@@ -96,16 +103,6 @@ fun SettingsScreen() {
                 ollamaTestResult = "✗ 连接失败，请检查 host / 端口（$host）"
             }
             ollamaTesting = false
-        }
-    }
-
-    fun loadModels() {
-        ollamaLoading = true
-        scope.launch {
-            val list = runCatching { repo.listAvailable() }.getOrElse { emptyList() }
-            ollamaModels = list
-            if (list.isEmpty()) ollamaTestResult = "⚠ 远端没有模型，请拉取一个"
-            ollamaLoading = false
         }
     }
 
@@ -191,11 +188,12 @@ fun SettingsScreen() {
                             )
                         }
                         if (ollamaTestResult != null) {
+                            val testRes = ollamaTestResult!!
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                ollamaTestResult,
+                                testRes,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = if (ollamaTestResult.startsWith("✓")) MaterialTheme.colorScheme.tertiary
+                                color = if (testRes.startsWith("✓")) MaterialTheme.colorScheme.tertiary
                                 else MaterialTheme.colorScheme.error
                             )
                         }
@@ -254,11 +252,12 @@ fun SettingsScreen() {
                         Spacer(Modifier.height(8.dp))
                         SmallButton("验证配置", onClick = { testCloud() })
                         if (cloudTestResult != null) {
+                            val cloudRes = cloudTestResult!!
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                cloudTestResult,
+                                cloudRes,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = if (cloudTestResult.startsWith("✓")) MaterialTheme.colorScheme.tertiary
+                                color = if (cloudRes.startsWith("✓")) MaterialTheme.colorScheme.tertiary
                                 else MaterialTheme.colorScheme.error
                             )
                         }

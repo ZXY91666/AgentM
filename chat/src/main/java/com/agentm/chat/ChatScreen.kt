@@ -1,5 +1,6 @@
 package com.agentm.chat
 
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -21,7 +22,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ImeAction
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,11 +48,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.KeyEventType.Companion.KeyDown
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -179,7 +183,7 @@ fun ChatScreen(viewModel: ChatViewModel = viewModel()) {
                     modifier = Modifier
                         .weight(1f)
                         .onKeyEvent { event ->
-                            if (event.key == Key.Enter && event.type == KeyEventType.Down) {
+                            if (event.key == Key.Enter && event.type == KeyDown) {
                                 onSend()
                                 true
                             } else false
@@ -316,7 +320,7 @@ private fun StreamingBubble(text: String, running: Boolean) {
 private fun TypingDot(index: Int) {
     val transition = rememberInfiniteTransition(label = "typing-dot-$index")
     val alpha = transition.animateFloat(
-        initial = 0.2f,
+        initialValue = 0.2f,
         targetValue = 1f,
         animationSpec = infiniteRepeatable(
             keyframes {
@@ -332,7 +336,7 @@ private fun TypingDot(index: Int) {
         modifier = Modifier
             .size(5.dp)
             .background(MaterialTheme.colorScheme.primary, CircleShape)
-            .let { it.alpha(alpha.value) }
+            .alpha(alpha.value)
     )
 }
 

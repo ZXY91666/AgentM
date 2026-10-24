@@ -29,7 +29,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.menuAnchor
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -38,12 +37,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.agentm.app.AgentMApplication
 import com.agentm.orchestrator.persistence.GraphSpec
 import com.agentm.core.ui.amPressBounce
 
@@ -120,7 +119,7 @@ fun GraphCanvasScreen() {
         }
         val json = buildJson()
         try {
-            AgentMApplication.app.orchestrator.loadGraphSpec(json)
+            ChatGraphHolder.orchestrator.loadGraphSpec(json)
             saveMsg = "已保存 ${json.length} 字符 JSON，图「$graphId」已注册到 Orchestrator"
             errorMsg = ""
         } catch (t: Throwable) {

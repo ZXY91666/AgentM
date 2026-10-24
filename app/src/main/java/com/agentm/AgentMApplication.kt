@@ -46,6 +46,9 @@ class AgentMApplication : Application() {
             )
         )
         orchestrator.registerGraph(defaultMainGraph())
+
+        // 3. 把 orchestrator 注入 chat 模块（chat 不反向依赖 :app）
+        com.agentm.chat.ChatGraphHolder.bind(orchestrator, ollamaRepo)
     }
 
     /**
